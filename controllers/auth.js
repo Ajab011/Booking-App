@@ -1,6 +1,7 @@
 import User from "../models/User.js"
 import bcrypt from "bcryptjs"
 import{createError} from "../utils/error.js"
+import jwt from "jsonwebtoken";
 export const register =async (req,res,next)=>{
     try{
 
@@ -25,30 +26,28 @@ export const register =async (req,res,next)=>{
 
 export const login =async (req,res,next)=>{
     try{
-        
-           console.log("Request Body:", req.body);
-        
         const user= await User.findOne({username:req.body.username});
-        console.log("Found User:", user);
-        console.log("Found :", req.body.username);
-
         if(!user) 
             return next(createError(404,"User not found"));
 
-        console.log(req.body);
+        
         const PasswordCorrect= await bcrypt.compare(
             req.body.password,
             user.password);
-            console.log("Password Check:", PasswordCorrect);
-            
-       if(!PasswordCorrect) 
+     if(!PasswordCorrect) 
         return next(createError(402,"Wrong Password"));
+
+    const token=jwt.sign({id:user._id, isAdmin:user.isAdmin},process.env.JWT)
+    
+       const{password,isAdmin}=user;
        
-    //    const{password,isAdmin,...otherDetails}=user._doc 
-       
-       
-       res.status(200).json(user);
-       //we can use 201 status also that means new user created successfully
+        res.cookie("access_token",token,{
+            httpOnly:true,// it doesnot allow any client script to reach these cookie
+        })
+        .status(200)
+        .json({
+            "msg":"logged in successfully"
+        });
     }
     catch(err){
         next(err);
