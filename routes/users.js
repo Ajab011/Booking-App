@@ -6,13 +6,16 @@ import {
     getUsers
 
 }from "../controllers/user.js";
-import { verifyToken, verifyUser } from "../utils/verifyToken.js";
+import { verifyToken, verifyUser,verifyAdmin } from "../utils/verifyToken.js";
 const router=express.Router();
 router.get("/checkauthentication",verifyToken,(req,res,next)=>{
     res.send("hello user,you are logeed in")
 })
 router.get("/checkuser/:id",verifyUser,(req,res,next)=>{
     res.send("hellouser,you are logged in and you can delete your account")
+})
+router.get("/checkadmin/:id",verifyAdmin,(req,res,next)=>{
+    res.send("helloadmin,you are logged in and you can delete all accounts")
 })
 
 //update
