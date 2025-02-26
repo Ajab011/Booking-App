@@ -51,5 +51,5 @@ app.use((err,req,res,next)=>{
 
 app.listen(8000, ()=>{
     connect()
-    console.log("connected to backend.")
+    console.log("connected to backend on port 8000") // Giving in the port number in here
 })
