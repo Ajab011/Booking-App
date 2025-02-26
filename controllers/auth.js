@@ -5,18 +5,24 @@ import jwt from "jsonwebtoken";
 export const register =async (req,res,next)=>{
     try{
 
+        console.log("control initial") 
+
         const salt = bcrypt.genSaltSync(10);
        const hash = bcrypt.hashSync(req.body.password, salt);
 
 
-       const newUser=new User({
+       const newUser= new User({
         username:req.body.username,
         email:req.body.email,
         password:hash,
+        isAdmin:req.body.isAdmin // Changes to include in the isAdmin property on the db 
        
        })
+       console.log("Control11")
        await newUser.save()
        res.status(200).send("User has been created")
+
+       console.log("Control12")
        //we can use 201 status also that means new user created successfully
     }
     catch(err){
