@@ -7,7 +7,7 @@ import roomsRoute from "./routes/rooms.js"
 import usersRoute from "./routes/users.js"
 import cookieParser from "cookie-parser"
 const app=express()
-//AjabFlexwala011
+
 dotenv.config()
 const connect= async()=>{
 try{
